@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -7,14 +7,26 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Sparkles } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 
 const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { user } = useAuth();
   
-  const handleSignUp = (e: React.FormEvent) => {
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user) {
+      navigate("/my-bookings");
+    }
+  }, [user, navigate]);
+  
+  const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!name || !email || !password || !confirmPassword) {
@@ -27,8 +39,34 @@ const SignUp = () => {
       return;
     }
     
-    // Mock sign up - in a real app, this would create an account
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      return;
+    }
+    
+    setLoading(true);
+    
+    const redirectUrl = `${window.location.origin}/my-bookings`;
+    
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: redirectUrl,
+        data: {
+          name,
+        },
+      },
+    });
+    
+    if (error) {
+      toast.error(error.message);
+      setLoading(false);
+      return;
+    }
+    
     toast.success("Account created successfully!");
+    navigate("/my-bookings");
   };
   
   return (
@@ -95,8 +133,8 @@ const SignUp = () => {
                 />
               </div>
               
-              <Button type="submit" variant="gradient" size="lg" className="w-full">
-                Create Account
+              <Button type="submit" variant="gradient" size="lg" className="w-full" disabled={loading}>
+                {loading ? "Creating Account..." : "Create Account"}
               </Button>
             </form>
             

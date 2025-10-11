@@ -1,11 +1,26 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Sparkles } from "lucide-react";
+import { Sparkles, LogOut } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const Navbar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user } = useAuth();
   
   const isActive = (path: string) => location.pathname === path;
+  
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      toast.error("Failed to logout");
+      return;
+    }
+    toast.success("Logged out successfully");
+    navigate("/");
+  };
   
   return (
     <nav className="glass sticky top-0 z-50 border-b border-white/20">
@@ -37,16 +52,32 @@ const Navbar = () => {
         </div>
         
         <div className="flex items-center gap-3">
-          <Link to="/login">
-            <Button variant="ghost" size="sm">
-              Login
-            </Button>
-          </Link>
-          <Link to="/signup">
-            <Button variant="gradient" size="sm">
-              Sign Up
-            </Button>
-          </Link>
+          {user ? (
+            <>
+              <Link to="/my-bookings">
+                <Button variant="ghost" size="sm">
+                  My Bookings
+                </Button>
+              </Link>
+              <Button variant="gradient" size="sm" onClick={handleLogout}>
+                <LogOut className="h-4 w-4 mr-2" />
+                Logout
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link to="/login">
+                <Button variant="ghost" size="sm">
+                  Login
+                </Button>
+              </Link>
+              <Link to="/signup">
+                <Button variant="gradient" size="sm">
+                  Sign Up
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </nav>

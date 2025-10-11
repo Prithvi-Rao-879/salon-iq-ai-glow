@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -7,12 +7,24 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Sparkles } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { user } = useAuth();
   
-  const handleLogin = (e: React.FormEvent) => {
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user) {
+      navigate("/my-bookings");
+    }
+  }, [user, navigate]);
+  
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!email || !password) {
@@ -20,8 +32,21 @@ const Login = () => {
       return;
     }
     
-    // Mock login - in a real app, this would authenticate with a backend
+    setLoading(true);
+    
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    
+    if (error) {
+      toast.error(error.message);
+      setLoading(false);
+      return;
+    }
+    
     toast.success("Login successful!");
+    navigate("/my-bookings");
   };
   
   return (
@@ -64,8 +89,8 @@ const Login = () => {
                 />
               </div>
               
-              <Button type="submit" variant="gradient" size="lg" className="w-full">
-                Login
+              <Button type="submit" variant="gradient" size="lg" className="w-full" disabled={loading}>
+                {loading ? "Logging in..." : "Login"}
               </Button>
             </form>
             
