@@ -49,7 +49,7 @@ const SalonDetail = () => {
     );
   }
   
-  const handleBooking = (e: React.FormEvent) => {
+  const handleBooking = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!selectedService || !selectedDate || !selectedTime || !customerName || !phone) {
@@ -68,6 +68,20 @@ const SalonDetail = () => {
       email,
       status: "Confirmed"
     };
+    
+    // Send to n8n webhook
+    try {
+      await fetch("https://ohjdojjcbsj.app.n8n.cloud/webhook/smartsalonscheduler", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(booking),
+      });
+    } catch (error) {
+      console.error("Failed to send booking to webhook:", error);
+      // Continue with booking even if webhook fails
+    }
     
     // Get existing bookings
     const existingBookings = JSON.parse(localStorage.getItem("bookings") || "[]");
