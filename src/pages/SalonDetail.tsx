@@ -69,27 +69,36 @@ const SalonDetail = () => {
       status: "Confirmed"
     };
     
-    // Send to n8n webhook
+    // Send to n8n webhook and wait for response
     try {
-      await fetch("https://ohjdojjcbsj.app.n8n.cloud/webhook/smartsalonscheduler", {
+      const response = await fetch("https://ohjdojjcbsj.app.n8n.cloud/webhook/smartsalonscheduler", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(booking),
       });
+      
+      const responseText = await response.text();
+      
+      // Check if the response indicates a failure (slot already booked)
+      if (responseText.includes("✗") || responseText.toLowerCase().includes("sorry") || responseText.toLowerCase().includes("already booked")) {
+        toast.error(responseText);
+        return;
+      }
+      
+      // If successful, store booking and navigate to confirmation
+      const existingBookings = JSON.parse(localStorage.getItem("bookings") || "[]");
+      existingBookings.push(booking);
+      localStorage.setItem("bookings", JSON.stringify(existingBookings));
+      
+      toast.success("Booking confirmed!");
+      navigate("/booking-confirmed", { state: { booking } });
+      
     } catch (error) {
       console.error("Failed to send booking to webhook:", error);
-      // Continue with booking even if webhook fails
+      toast.error("Failed to process booking. Please try again.");
     }
-    
-    // Get existing bookings
-    const existingBookings = JSON.parse(localStorage.getItem("bookings") || "[]");
-    existingBookings.push(booking);
-    localStorage.setItem("bookings", JSON.stringify(existingBookings));
-    
-    // Navigate to confirmation
-    navigate("/booking-confirmed", { state: { booking } });
   };
   
   return (
