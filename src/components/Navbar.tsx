@@ -28,7 +28,7 @@ const Navbar = () => {
         <Link to="/" className="flex items-center gap-2 group">
           <Sparkles className="h-6 w-6 text-primary group-hover:animate-spin transition-transform" />
           <span className="text-xl font-bold bg-gradient-to-r from-primary-start to-primary-end bg-clip-text text-transparent">
-            SalonIQ
+            Smart Salon Slot Scheduler
           </span>
         </Link>
         
