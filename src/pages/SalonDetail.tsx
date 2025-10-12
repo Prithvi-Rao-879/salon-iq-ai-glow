@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -14,15 +14,16 @@ import {
 } from "@/components/ui/select";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CalendarIcon, Star } from "lucide-react";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { CalendarIcon, Star, CheckCircle2 } from "lucide-react";
 import { format } from "date-fns";
 import { salons } from "@/data/salons";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import confetti from "canvas-confetti";
 
 const SalonDetail = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const salon = salons.find((s) => s.id === Number(id));
   
   const [selectedService, setSelectedService] = useState("");
@@ -31,6 +32,8 @@ const SalonDetail = () => {
   const [customerName, setCustomerName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [confirmedBooking, setConfirmedBooking] = useState<any>(null);
   
   const timeSlots = [
     "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM",
@@ -87,13 +90,42 @@ const SalonDetail = () => {
         return;
       }
       
-      // If successful, store booking and navigate to confirmation
+      // If successful, store booking and show confirmation dialog
       const existingBookings = JSON.parse(localStorage.getItem("bookings") || "[]");
       existingBookings.push(booking);
       localStorage.setItem("bookings", JSON.stringify(existingBookings));
       
-      toast.success("Booking confirmed!");
-      navigate("/booking-confirmed", { state: { booking } });
+      setConfirmedBooking(booking);
+      setShowConfirmation(true);
+      
+      // Trigger confetti
+      const duration = 3 * 1000;
+      const animationEnd = Date.now() + duration;
+      const randomInRange = (min: number, max: number) => Math.random() * (max - min) + min;
+
+      const interval = setInterval(() => {
+        const timeLeft = animationEnd - Date.now();
+        if (timeLeft <= 0) {
+          clearInterval(interval);
+          return;
+        }
+        const particleCount = 50 * (timeLeft / duration);
+        confetti({
+          particleCount,
+          startVelocity: 30,
+          spread: 360,
+          origin: { x: randomInRange(0.1, 0.9), y: Math.random() - 0.2 },
+          colors: ['#DB7093', '#DDA0DD', '#E6E6FA'],
+        });
+      }, 250);
+      
+      // Reset form
+      setSelectedService("");
+      setSelectedDate(undefined);
+      setSelectedTime("");
+      setCustomerName("");
+      setPhone("");
+      setEmail("");
       
     } catch (error) {
       console.error("Failed to send booking to webhook:", error);
@@ -254,6 +286,62 @@ const SalonDetail = () => {
           </div>
         </div>
       </div>
+      
+      {/* Confirmation Dialog */}
+      <Dialog open={showConfirmation} onOpenChange={setShowConfirmation}>
+        <DialogContent className="glass-card max-w-lg">
+          <div className="text-center p-6">
+            <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-primary-start to-primary-end rounded-full flex items-center justify-center">
+              <CheckCircle2 className="h-10 w-10 text-white" />
+            </div>
+            
+            <h2 className="text-3xl font-bold mb-2">🎉 Booking Confirmed!</h2>
+            
+            <p className="text-lg text-muted-foreground mb-6">
+              Your booking is confirmed at{" "}
+              <span className="font-semibold text-foreground">{confirmedBooking?.salonName}</span>
+            </p>
+            
+            <div className="glass p-6 rounded-xl space-y-3 text-left mb-6">
+              <div className="flex justify-between items-center">
+                <span className="text-muted-foreground">Service:</span>
+                <span className="font-semibold">{confirmedBooking?.service}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-muted-foreground">Date:</span>
+                <span className="font-semibold">{confirmedBooking?.date}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-muted-foreground">Time:</span>
+                <span className="font-semibold">{confirmedBooking?.time}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-muted-foreground">Name:</span>
+                <span className="font-semibold">{confirmedBooking?.customerName}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-muted-foreground">Phone:</span>
+                <span className="font-semibold">{confirmedBooking?.phone}</span>
+              </div>
+              {confirmedBooking?.email && (
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground">Email:</span>
+                  <span className="font-semibold">{confirmedBooking?.email}</span>
+                </div>
+              )}
+            </div>
+            
+            <Button 
+              onClick={() => setShowConfirmation(false)} 
+              variant="gradient" 
+              size="lg" 
+              className="w-full"
+            >
+              Done
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
       
       <Footer />
     </div>
