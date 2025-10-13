@@ -31,10 +31,10 @@ export const salons: Salon[] = [
     rating: 4.8,
     description: "Modern hair salon with expert stylists specializing in cutting-edge trends and classic styles.",
     availableServices: [
-      { id: 1, name: "Haircut & Style", duration: "60 min", price: "₹7,200" },
-      { id: 2, name: "Hair Coloring", duration: "120 min", price: "₹12,800" },
-      { id: 3, name: "Highlights", duration: "90 min", price: "₹10,200" },
-      { id: 4, name: "Deep Conditioning", duration: "45 min", price: "₹5,500" },
+      { id: 1, name: "Haircut & Style", duration: "60 min", price: "₹720" },
+      { id: 2, name: "Hair Coloring", duration: "120 min", price: "₹1,280" },
+      { id: 3, name: "Highlights", duration: "90 min", price: "₹1,020" },
+      { id: 4, name: "Deep Conditioning", duration: "45 min", price: "₹550" },
     ],
   },
   {
@@ -45,10 +45,10 @@ export const salons: Salon[] = [
     rating: 4.9,
     description: "Luxury spa offering premium skincare treatments and relaxation therapies.",
     availableServices: [
-      { id: 5, name: "Classic Facial", duration: "60 min", price: "₹8,100" },
-      { id: 6, name: "Anti-Aging Facial", duration: "90 min", price: "₹12,300" },
-      { id: 7, name: "Body Massage", duration: "60 min", price: "₹9,400" },
-      { id: 8, name: "Spa Package", duration: "180 min", price: "₹23,800" },
+      { id: 5, name: "Classic Facial", duration: "60 min", price: "₹810" },
+      { id: 6, name: "Anti-Aging Facial", duration: "90 min", price: "₹1,230" },
+      { id: 7, name: "Body Massage", duration: "60 min", price: "₹940" },
+      { id: 8, name: "Spa Package", duration: "180 min", price: "₹2,380" },
     ],
   },
   {
@@ -59,10 +59,10 @@ export const salons: Salon[] = [
     rating: 4.7,
     description: "Premium nail salon with the latest trends in nail care and artistic designs.",
     availableServices: [
-      { id: 9, name: "Classic Manicure", duration: "45 min", price: "₹3,800" },
-      { id: 10, name: "Gel Manicure", duration: "60 min", price: "₹5,500" },
-      { id: 11, name: "Spa Pedicure", duration: "75 min", price: "₹6,400" },
-      { id: 12, name: "Nail Art Design", duration: "30 min", price: "₹2,100" },
+      { id: 9, name: "Classic Manicure", duration: "45 min", price: "₹380" },
+      { id: 10, name: "Gel Manicure", duration: "60 min", price: "₹550" },
+      { id: 11, name: "Spa Pedicure", duration: "75 min", price: "₹640" },
+      { id: 12, name: "Nail Art Design", duration: "30 min", price: "₹210" },
     ],
   },
   {
@@ -73,10 +73,10 @@ export const salons: Salon[] = [
     rating: 4.9,
     description: "Professional makeup studio for special events, weddings, and everyday glamour.",
     availableServices: [
-      { id: 13, name: "Special Event Makeup", duration: "90 min", price: "₹10,600" },
-      { id: 14, name: "Bridal Makeup", duration: "120 min", price: "₹17,000" },
-      { id: 15, name: "Eyebrow Shaping", duration: "30 min", price: "₹3,000" },
-      { id: 16, name: "Lash Extensions", duration: "90 min", price: "₹12,800" },
+      { id: 13, name: "Special Event Makeup", duration: "90 min", price: "₹1,060" },
+      { id: 14, name: "Bridal Makeup", duration: "120 min", price: "₹1,700" },
+      { id: 15, name: "Eyebrow Shaping", duration: "30 min", price: "₹300" },
+      { id: 16, name: "Lash Extensions", duration: "90 min", price: "₹1,280" },
     ],
   },
   {
@@ -87,10 +87,10 @@ export const salons: Salon[] = [
     rating: 4.8,
     description: "Contemporary barbershop combining classic techniques with modern style.",
     availableServices: [
-      { id: 17, name: "Haircut", duration: "45 min", price: "₹4,700" },
-      { id: 18, name: "Hot Towel Shave", duration: "30 min", price: "₹3,800" },
-      { id: 19, name: "Beard Trim & Shape", duration: "30 min", price: "₹3,000" },
-      { id: 20, name: "Full Service", duration: "90 min", price: "₹8,100" },
+      { id: 17, name: "Haircut", duration: "45 min", price: "₹470" },
+      { id: 18, name: "Hot Towel Shave", duration: "30 min", price: "₹380" },
+      { id: 19, name: "Beard Trim & Shape", duration: "30 min", price: "₹300" },
+      { id: 20, name: "Full Service", duration: "90 min", price: "₹810" },
     ],
   },
   {
@@ -101,10 +101,10 @@ export const salons: Salon[] = [
     rating: 4.7,
     description: "Boutique salon blending vintage charm with modern hair care expertise.",
     availableServices: [
-      { id: 21, name: "Blow Dry & Style", duration: "45 min", price: "₹5,500" },
-      { id: 22, name: "Keratin Treatment", duration: "180 min", price: "₹21,300" },
-      { id: 23, name: "Hair Extensions", duration: "240 min", price: "₹34,000" },
-      { id: 24, name: "Updo Styling", duration: "90 min", price: "₹8,100" },
+      { id: 21, name: "Blow Dry & Style", duration: "45 min", price: "₹550" },
+      { id: 22, name: "Keratin Treatment", duration: "180 min", price: "₹2,130" },
+      { id: 23, name: "Hair Extensions", duration: "240 min", price: "₹3,400" },
+      { id: 24, name: "Updo Styling", duration: "90 min", price: "₹810" },
     ],
   },
 ];

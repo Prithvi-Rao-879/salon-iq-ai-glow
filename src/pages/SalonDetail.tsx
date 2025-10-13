@@ -273,7 +273,7 @@ const SalonDetail = () => {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   className="glass"
-                  placeholder="(555) 123-4567"
+                  placeholder="+91 98765 43210"
                 />
               </div>
               
