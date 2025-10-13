@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Star } from "lucide-react";
+import ReviewsModal from "./ReviewsModal";
 
 interface SalonCardProps {
   id: number;
@@ -11,7 +13,16 @@ interface SalonCardProps {
 }
 
 const SalonCard = ({ id, name, image, services, rating }: SalonCardProps) => {
+  const [showReviews, setShowReviews] = useState(false);
+
   return (
+    <>
+      <ReviewsModal
+        open={showReviews}
+        onOpenChange={setShowReviews}
+        salonId={id}
+        salonName={name}
+      />
     <div className="glass-card overflow-hidden group hover:scale-105 transition-all duration-300 soft-glow">
       <div className="relative h-48 overflow-hidden">
         <img
@@ -31,13 +42,23 @@ const SalonCard = ({ id, name, image, services, rating }: SalonCardProps) => {
           {services.join(" • ")}
         </p>
         
-        <Link to={`/salon/${id}`}>
-          <Button variant="gradient" className="w-full">
-            Book Now
+        <div className="space-y-2">
+          <Link to={`/salon/${id}`}>
+            <Button variant="gradient" className="w-full">
+              Book Now
+            </Button>
+          </Link>
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={() => setShowReviews(true)}
+          >
+            Reviews
           </Button>
-        </Link>
+        </div>
       </div>
     </div>
+    </>
   );
 };
 
