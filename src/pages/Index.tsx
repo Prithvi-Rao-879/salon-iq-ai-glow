@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SalonCard from "@/components/SalonCard";
@@ -6,8 +6,20 @@ import { Button } from "@/components/ui/button";
 import { Sparkles, Search, Calendar, CheckCircle2 } from "lucide-react";
 import { salons } from "@/data/salons";
 import heroImage from "@/assets/hero-salon.jpg";
+import { useAuth } from "@/hooks/useAuth";
 
 const Index = () => {
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
+
+  const handleBookNow = () => {
+    if (!user) {
+      navigate("/signup");
+    } else {
+      document.getElementById("explore")?.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <div className="min-h-screen">
       <Navbar />
@@ -33,11 +45,9 @@ const Index = () => {
             </p>
             
             <div className="flex gap-4">
-              <Link to="#explore">
-                <Button variant="gradient" size="xl">
-                  Book Now
-                </Button>
-              </Link>
+              <Button variant="gradient" size="xl" onClick={handleBookNow}>
+                Book Now
+              </Button>
               <Link to="/login">
                 <Button variant="glass" size="xl">
                   Login
