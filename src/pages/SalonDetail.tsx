@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Navigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
+import { useAuth } from "@/hooks/useAuth";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,6 +25,7 @@ import confetti from "canvas-confetti";
 
 const SalonDetail = () => {
   const { id } = useParams();
+  const { user, loading } = useAuth();
   const salon = salons.find((s) => s.id === Number(id));
   
   const [selectedService, setSelectedService] = useState("");
@@ -40,6 +42,14 @@ const SalonDetail = () => {
     "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM"
   ];
   
+  if (loading) {
+    return null;
+  }
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
   if (!salon) {
     return (
       <div className="min-h-screen">

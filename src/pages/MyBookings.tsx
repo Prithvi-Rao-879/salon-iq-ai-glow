@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, MapPin, Sparkles } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 interface Booking {
   salonName: string;
@@ -17,6 +18,7 @@ interface Booking {
 }
 
 const MyBookings = () => {
+  const { user, loading } = useAuth();
   const [bookings, setBookings] = useState<Booking[]>([]);
   
   useEffect(() => {
@@ -30,6 +32,14 @@ const MyBookings = () => {
     setBookings(updatedBookings);
     localStorage.setItem("bookings", JSON.stringify(updatedBookings));
   };
+
+  if (loading) {
+    return null;
+  }
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
   
   return (
     <div className="min-h-screen">
