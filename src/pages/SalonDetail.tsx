@@ -36,6 +36,7 @@ const SalonDetail = () => {
   const [email, setEmail] = useState("");
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [confirmedBooking, setConfirmedBooking] = useState<any>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   const timeSlots = [
     "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM",
@@ -70,6 +71,8 @@ const SalonDetail = () => {
       return;
     }
     
+    setIsSubmitting(true);
+    
     // Store booking data
     const booking = {
       salonName: salon.name,
@@ -84,7 +87,7 @@ const SalonDetail = () => {
     
     // Send to n8n webhook and wait for response
     try {
-      const response = await fetch("https://ohjdojjcbsj.app.n8n.cloud/webhook/smartsalonscheduler", {
+      const response = await fetch("https://imtheog.app.n8n.cloud/webhook/newsalonscheduler", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -140,6 +143,8 @@ const SalonDetail = () => {
     } catch (error) {
       console.error("Failed to send booking to webhook:", error);
       toast.error("Failed to process booking. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
   
@@ -289,8 +294,8 @@ const SalonDetail = () => {
                 />
               </div>
               
-              <Button type="submit" variant="gradient" size="xl" className="w-full">
-                Book My Slot ✨
+              <Button type="submit" variant="gradient" size="xl" className="w-full" disabled={isSubmitting}>
+                {isSubmitting ? "Processing..." : "Book My Slot ✨"}
               </Button>
             </form>
           </div>
