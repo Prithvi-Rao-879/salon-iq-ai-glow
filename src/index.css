@@ -8,49 +8,49 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Pastel gradient background colors */
-    --background: 330 60% 97%;
-    --foreground: 280 20% 20%;
+    /* Classy Earth Tone - Luxury & Trustworthy */
+    --background: 40 33% 97%;
+    --foreground: 0 0% 24%;
 
-    /* Glass-morphism card colors */
-    --card: 0 0% 100%;
-    --card-foreground: 280 20% 20%;
+    /* Card colors */
+    --card: 60 33% 91%;
+    --card-foreground: 0 0% 24%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 280 20% 20%;
+    --popover: 60 33% 91%;
+    --popover-foreground: 0 0% 24%;
 
-    /* AI-inspired gradient colors */
-    --primary: 280 70% 65%;
+    /* Warm Gold accent */
+    --primary: 43 59% 51%;
     --primary-foreground: 0 0% 100%;
     
-    --primary-start: 340 75% 75%;
-    --primary-end: 280 70% 65%;
+    --primary-start: 43 59% 51%;
+    --primary-end: 43 59% 41%;
 
-    --secondary: 270 40% 95%;
-    --secondary-foreground: 280 20% 20%;
+    --secondary: 60 33% 91%;
+    --secondary-foreground: 0 0% 24%;
 
-    --muted: 270 30% 96%;
-    --muted-foreground: 280 15% 55%;
+    --muted: 60 20% 93%;
+    --muted-foreground: 0 0% 49%;
 
-    --accent: 340 75% 75%;
+    --accent: 43 59% 51%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 270 30% 92%;
-    --input: 270 30% 94%;
-    --ring: 280 70% 65%;
+    --border: 60 20% 88%;
+    --input: 60 20% 90%;
+    --ring: 43 59% 51%;
 
     --radius: 1rem;
     
     /* Custom gradient stops */
-    --gradient-blush: 340 75% 75%;
-    --gradient-lavender: 270 60% 85%;
+    --gradient-blush: 43 59% 51%;
+    --gradient-lavender: 40 25% 95%;
     
     /* Glass-morphism */
-    --glass-bg: 0 0% 100%;
-    --glass-border: 270 30% 90%;
+    --glass-bg: 40 33% 97%;
+    --glass-border: 60 20% 88%;
 
     --sidebar-background: 0 0% 98%;
 
@@ -70,33 +70,33 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 280 30% 10%;
-    --foreground: 270 20% 95%;
+    --background: 0 0% 12%;
+    --foreground: 60 33% 91%;
 
-    --card: 280 25% 15%;
-    --card-foreground: 270 20% 95%;
+    --card: 0 0% 18%;
+    --card-foreground: 60 33% 91%;
 
-    --popover: 280 25% 15%;
-    --popover-foreground: 270 20% 95%;
+    --popover: 0 0% 18%;
+    --popover-foreground: 60 33% 91%;
 
-    --primary: 280 70% 65%;
+    --primary: 43 59% 51%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 280 20% 20%;
-    --secondary-foreground: 270 20% 95%;
+    --secondary: 0 0% 20%;
+    --secondary-foreground: 60 33% 91%;
 
-    --muted: 280 20% 20%;
-    --muted-foreground: 270 15% 65%;
+    --muted: 0 0% 25%;
+    --muted-foreground: 0 0% 60%;
 
-    --accent: 340 75% 75%;
+    --accent: 43 59% 51%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62.8% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 280 20% 25%;
-    --input: 280 20% 25%;
-    --ring: 280 70% 65%;
+    --border: 0 0% 25%;
+    --input: 0 0% 25%;
+    --ring: 43 59% 51%;
   }
 }
 
