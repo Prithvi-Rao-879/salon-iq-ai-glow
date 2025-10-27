@@ -46,27 +46,42 @@ const SignUp = () => {
     
     setLoading(true);
     
-    const redirectUrl = `${window.location.origin}/my-bookings`;
-    
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: redirectUrl,
-        data: {
-          name,
+    try {
+      const redirectUrl = `${window.location.origin}/my-bookings`;
+      
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: redirectUrl,
+          data: {
+            name,
+          },
         },
-      },
-    });
-    
-    if (error) {
-      toast.error(error.message);
+      });
+      
+      if (error) {
+        console.error('Signup error:', error);
+        toast.error(error.message || "Failed to create account");
+        setLoading(false);
+        return;
+      }
+      
+      if (data.session) {
+        toast.success("Account created successfully!");
+        // Wait a moment for auth state to update
+        setTimeout(() => {
+          navigate("/my-bookings");
+        }, 100);
+      } else {
+        toast.success("Account created! Please check your email to verify.");
+        setLoading(false);
+      }
+    } catch (err) {
+      console.error('Unexpected signup error:', err);
+      toast.error("An unexpected error occurred");
       setLoading(false);
-      return;
     }
-    
-    toast.success("Account created successfully!");
-    navigate("/my-bookings");
   };
   
   return (

@@ -34,19 +34,31 @@ const Login = () => {
     
     setLoading(true);
     
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    
-    if (error) {
-      toast.error(error.message);
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      
+      if (error) {
+        console.error('Login error:', error);
+        toast.error(error.message || "Failed to login");
+        setLoading(false);
+        return;
+      }
+      
+      if (data.session) {
+        toast.success("Login successful!");
+        // Wait a moment for auth state to update
+        setTimeout(() => {
+          navigate("/my-bookings");
+        }, 100);
+      }
+    } catch (err) {
+      console.error('Unexpected login error:', err);
+      toast.error("An unexpected error occurred");
       setLoading(false);
-      return;
     }
-    
-    toast.success("Login successful!");
-    navigate("/my-bookings");
   };
   
   return (
