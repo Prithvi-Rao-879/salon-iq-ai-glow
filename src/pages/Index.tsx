@@ -48,11 +48,13 @@ const Index = () => {
               <Button variant="gradient" size="xl" onClick={handleBookNow}>
                 Book Now
               </Button>
-              <Link to="/login">
-                <Button variant="glass" size="xl">
-                  Login
-                </Button>
-              </Link>
+              {!user && (
+                <Link to="/login">
+                  <Button variant="glass" size="xl">
+                    Login
+                  </Button>
+                </Link>
+              )}
             </div>
           </div>
           
