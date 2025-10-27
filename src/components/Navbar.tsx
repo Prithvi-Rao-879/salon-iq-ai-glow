@@ -13,13 +13,21 @@ const Navbar = () => {
   const isActive = (path: string) => location.pathname === path;
   
   const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      toast.error("Failed to logout");
-      return;
+    try {
+      const { error } = await supabase.auth.signOut();
+      // Ignore session_not_found errors as user is already logged out
+      if (error && error.message !== 'Session not found') {
+        console.error('Logout error:', error);
+        toast.error("Failed to logout");
+        return;
+      }
+      toast.success("Logged out successfully");
+      navigate("/");
+    } catch (err) {
+      console.error('Unexpected logout error:', err);
+      // Still navigate away even if there's an error
+      navigate("/");
     }
-    toast.success("Logged out successfully");
-    navigate("/");
   };
   
   return (
