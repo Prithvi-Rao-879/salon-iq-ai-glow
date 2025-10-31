@@ -3,6 +3,7 @@ import { useParams, Navigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import { useAuth } from "@/hooks/useAuth";
 import Footer from "@/components/Footer";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -103,10 +104,26 @@ const SalonDetail = () => {
         return;
       }
       
-      // If successful, store booking and show confirmation dialog
-      const existingBookings = JSON.parse(localStorage.getItem("bookings") || "[]");
-      existingBookings.push(booking);
-      localStorage.setItem("bookings", JSON.stringify(existingBookings));
+      // If successful, store booking in Supabase database
+      const { error: dbError } = await supabase
+        .from('bookings')
+        .insert({
+          user_id: user?.id,
+          salon_name: booking.salonName,
+          service: booking.service,
+          date: booking.date,
+          time: booking.time,
+          customer_name: booking.customerName,
+          phone: booking.phone,
+          email: booking.email,
+          status: booking.status
+        });
+      
+      if (dbError) {
+        console.error("Failed to save booking to database:", dbError);
+        toast.error("Booking confirmed but failed to save. Please contact support.");
+        return;
+      }
       
       setConfirmedBooking(booking);
       setShowConfirmation(true);

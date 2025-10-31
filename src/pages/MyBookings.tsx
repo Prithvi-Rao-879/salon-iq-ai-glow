@@ -5,8 +5,11 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, MapPin, Sparkles } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 interface Booking {
+  id: string;
   salonName: string;
   service: string;
   date: string;
@@ -20,20 +23,58 @@ interface Booking {
 const MyBookings = () => {
   const { user, loading } = useAuth();
   const [bookings, setBookings] = useState<Booking[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   
   useEffect(() => {
-    const savedBookings = JSON.parse(localStorage.getItem("bookings") || "[]");
-    setBookings(savedBookings);
-  }, []);
+    const fetchBookings = async () => {
+      if (!user) return;
+      
+      setIsLoading(true);
+      const { data, error } = await supabase
+        .from('bookings')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+      
+      if (error) {
+        console.error("Failed to fetch bookings:", error);
+        toast.error("Failed to load bookings");
+      } else {
+        const formattedBookings = data.map((booking: any) => ({
+          id: booking.id,
+          salonName: booking.salon_name,
+          service: booking.service,
+          date: booking.date,
+          time: booking.time,
+          customerName: booking.customer_name,
+          phone: booking.phone,
+          email: booking.email,
+          status: booking.status
+        }));
+        setBookings(formattedBookings);
+      }
+      setIsLoading(false);
+    };
+    
+    fetchBookings();
+  }, [user]);
   
-  const handleCancelBooking = (index: number) => {
-    const updatedBookings = [...bookings];
-    updatedBookings.splice(index, 1);
-    setBookings(updatedBookings);
-    localStorage.setItem("bookings", JSON.stringify(updatedBookings));
+  const handleCancelBooking = async (id: string) => {
+    const { error } = await supabase
+      .from('bookings')
+      .delete()
+      .eq('id', id);
+    
+    if (error) {
+      console.error("Failed to cancel booking:", error);
+      toast.error("Failed to cancel booking");
+    } else {
+      setBookings(bookings.filter(b => b.id !== id));
+      toast.success("Booking cancelled successfully");
+    }
   };
 
-  if (loading) {
+  if (loading || isLoading) {
     return null;
   }
 
@@ -107,7 +148,7 @@ const MyBookings = () => {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => handleCancelBooking(index)}
+                        onClick={() => handleCancelBooking(booking.id)}
                         className="glass hover:bg-destructive/10 hover:text-destructive"
                       >
                         Cancel Booking
