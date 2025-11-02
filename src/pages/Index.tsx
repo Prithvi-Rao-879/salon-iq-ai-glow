@@ -41,7 +41,7 @@ const Index = () => {
             </h1>
             
             <p className="text-xl text-muted-foreground">
-              Find and book your next salon appointment, hassle-free.
+              Let AI handle your salon booking slots so you never overbook nor leave empty slots. Smart scheduling that works for everyone.
             </p>
             
             <div className="flex gap-4">
@@ -124,6 +124,81 @@ const Index = () => {
               Instant confirmation and appointment reminder
             </p>
           </div>
+        </div>
+      </section>
+      
+      {/* Testimonials Section */}
+      <section className="container mx-auto px-4 py-16 bg-muted/30">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold mb-4">What Our Users Say</h2>
+          <p className="text-muted-foreground text-lg">
+            Trusted by thousands of satisfied customers
+          </p>
+        </div>
+        
+        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="glass-card p-6">
+            <div className="flex items-center gap-2 mb-4">
+              {[...Array(5)].map((_, i) => (
+                <span key={i} className="text-primary">★</span>
+              ))}
+            </div>
+            <p className="text-muted-foreground mb-4">
+              "This platform made booking so easy! No more calling multiple salons. I found the perfect one in minutes."
+            </p>
+            <p className="font-semibold">Sarah Johnson</p>
+            <p className="text-sm text-muted-foreground">Regular Customer</p>
+          </div>
+          
+          <div className="glass-card p-6">
+            <div className="flex items-center gap-2 mb-4">
+              {[...Array(5)].map((_, i) => (
+                <span key={i} className="text-primary">★</span>
+              ))}
+            </div>
+            <p className="text-muted-foreground mb-4">
+              "AI recommendations helped me discover amazing salons I never knew existed. The booking system is flawless!"
+            </p>
+            <p className="font-semibold">Michael Chen</p>
+            <p className="text-sm text-muted-foreground">Business Professional</p>
+          </div>
+          
+          <div className="glass-card p-6">
+            <div className="flex items-center gap-2 mb-4">
+              {[...Array(5)].map((_, i) => (
+                <span key={i} className="text-primary">★</span>
+              ))}
+            </div>
+            <p className="text-muted-foreground mb-4">
+              "As a salon owner, this system eliminated double bookings and empty slots. Our efficiency increased by 40%!"
+            </p>
+            <p className="font-semibold">Priya Sharma</p>
+            <p className="text-sm text-muted-foreground">Salon Owner</p>
+          </div>
+        </div>
+      </section>
+      
+      {/* Trusted By Section */}
+      <section className="container mx-auto px-4 py-16">
+        <div className="text-center mb-12">
+          <h2 className="text-2xl font-bold mb-8">Trusted by Leading Salons</h2>
+          <div className="flex flex-wrap justify-center items-center gap-12 opacity-60">
+            <div className="text-xl font-semibold">Glamour Studio</div>
+            <div className="text-xl font-semibold">Style Haven</div>
+            <div className="text-xl font-semibold">Beauty Elite</div>
+            <div className="text-xl font-semibold">The Cut Above</div>
+            <div className="text-xl font-semibold">Urban Chic</div>
+          </div>
+        </div>
+        
+        <div className="glass-card p-8 text-center max-w-3xl mx-auto mt-12">
+          <h3 className="text-2xl font-bold mb-4">Ready to Transform Your Booking Experience?</h3>
+          <p className="text-muted-foreground mb-6">
+            Join thousands of satisfied customers and salon owners using our AI-powered platform
+          </p>
+          <Button variant="gradient" size="xl" onClick={handleBookNow}>
+            Get Started Now
+          </Button>
         </div>
       </section>
       
