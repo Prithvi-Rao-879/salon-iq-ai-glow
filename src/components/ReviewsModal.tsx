@@ -11,6 +11,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { useToast } from "@/hooks/use-toast";
+import { salons } from "@/data/salons";
 
 interface Review {
   id: string;
@@ -48,6 +49,12 @@ const ReviewsModal = ({ open, onOpenChange, salonId, salonName }: ReviewsModalPr
     const storedReviews = localStorage.getItem(`reviews_${salonId}`);
     if (storedReviews) {
       setReviews(JSON.parse(storedReviews));
+    } else {
+      // Load default reviews from salon data if no reviews in localStorage
+      const salon = salons.find(s => s.id === salonId);
+      if (salon && salon.reviews) {
+        setReviews(salon.reviews);
+      }
     }
   };
 
