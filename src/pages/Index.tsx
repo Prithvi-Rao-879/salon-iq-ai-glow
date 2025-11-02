@@ -3,7 +3,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SalonCard from "@/components/SalonCard";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Search, Calendar, CheckCircle2 } from "lucide-react";
+import { Sparkles, Search, Calendar, CheckCircle2, Clock, Bell, BarChart3, CreditCard, Users, TrendingUp } from "lucide-react";
 import { salons } from "@/data/salons";
 import heroImage from "@/assets/hero-salon.jpg";
 import { useAuth } from "@/hooks/useAuth";
@@ -123,6 +123,145 @@ const Index = () => {
             <p className="text-muted-foreground">
               Instant confirmation and appointment reminder
             </p>
+          </div>
+        </div>
+      </section>
+      
+      {/* Features Section */}
+      <section className="container mx-auto px-4 py-16 bg-muted/30">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold mb-4">Powerful Features for Everyone</h2>
+          <p className="text-muted-foreground text-lg">
+            Built for both customers and salon owners
+          </p>
+        </div>
+        
+        {/* For Customers */}
+        <div className="mb-16">
+          <h3 className="text-2xl font-semibold mb-8 text-center">For Customers</h3>
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <div className="glass-card p-6 hover:scale-105 transition-all">
+              <div className="w-12 h-12 mb-4 bg-gradient-to-br from-primary-start to-primary-end rounded-xl flex items-center justify-center">
+                <Sparkles className="h-6 w-6 text-white" />
+              </div>
+              <h4 className="text-xl font-semibold mb-2">AI-Powered Recommendations</h4>
+              <p className="text-muted-foreground mb-3">
+                Get personalized salon suggestions based on your preferences and location
+              </p>
+              <p className="text-sm font-medium text-primary">
+                ✓ Find your perfect salon 3x faster
+              </p>
+            </div>
+            
+            <div className="glass-card p-6 hover:scale-105 transition-all">
+              <div className="w-12 h-12 mb-4 bg-gradient-to-br from-primary-start to-primary-end rounded-xl flex items-center justify-center">
+                <Clock className="h-6 w-6 text-white" />
+              </div>
+              <h4 className="text-xl font-semibold mb-2">Real-Time Availability</h4>
+              <p className="text-muted-foreground mb-3">
+                See available slots instantly and book without calling or waiting
+              </p>
+              <p className="text-sm font-medium text-primary">
+                ✓ Save 30+ minutes per booking
+              </p>
+            </div>
+            
+            <div className="glass-card p-6 hover:scale-105 transition-all">
+              <div className="w-12 h-12 mb-4 bg-gradient-to-br from-primary-start to-primary-end rounded-xl flex items-center justify-center">
+                <Bell className="h-6 w-6 text-white" />
+              </div>
+              <h4 className="text-xl font-semibold mb-2">Smart Reminders</h4>
+              <p className="text-muted-foreground mb-3">
+                Never miss an appointment with automated notifications and reminders
+              </p>
+              <p className="text-sm font-medium text-primary">
+                ✓ Zero missed appointments
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        {/* For Salon Owners */}
+        <div>
+          <h3 className="text-2xl font-semibold mb-8 text-center">For Salon Owners</h3>
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <div className="glass-card p-6 hover:scale-105 transition-all">
+              <div className="w-12 h-12 mb-4 bg-gradient-to-br from-primary-start to-primary-end rounded-xl flex items-center justify-center">
+                <Calendar className="h-6 w-6 text-white" />
+              </div>
+              <h4 className="text-xl font-semibold mb-2">Automated Slot Assignment</h4>
+              <p className="text-muted-foreground mb-3">
+                AI optimizes your schedule to maximize bookings and minimize gaps
+              </p>
+              <p className="text-sm font-medium text-primary">
+                ✓ Save 1-2 hours per day on scheduling
+              </p>
+            </div>
+            
+            <div className="glass-card p-6 hover:scale-105 transition-all">
+              <div className="w-12 h-12 mb-4 bg-gradient-to-br from-primary-start to-primary-end rounded-xl flex items-center justify-center">
+                <Users className="h-6 w-6 text-white" />
+              </div>
+              <h4 className="text-xl font-semibold mb-2">Customer Reminders</h4>
+              <p className="text-muted-foreground mb-3">
+                Automatic notifications reduce no-shows and keep your schedule full
+              </p>
+              <p className="text-sm font-medium text-primary">
+                ✓ Reduce no-shows by 30%
+              </p>
+            </div>
+            
+            <div className="glass-card p-6 hover:scale-105 transition-all">
+              <div className="w-12 h-12 mb-4 bg-gradient-to-br from-primary-start to-primary-end rounded-xl flex items-center justify-center">
+                <BarChart3 className="h-6 w-6 text-white" />
+              </div>
+              <h4 className="text-xl font-semibold mb-2">Business Analytics</h4>
+              <p className="text-muted-foreground mb-3">
+                Track bookings, revenue, and customer trends with detailed insights
+              </p>
+              <p className="text-sm font-medium text-primary">
+                ✓ Increase revenue by 25%
+              </p>
+            </div>
+            
+            <div className="glass-card p-6 hover:scale-105 transition-all">
+              <div className="w-12 h-12 mb-4 bg-gradient-to-br from-primary-start to-primary-end rounded-xl flex items-center justify-center">
+                <CreditCard className="h-6 w-6 text-white" />
+              </div>
+              <h4 className="text-xl font-semibold mb-2">Payment Integration</h4>
+              <p className="text-muted-foreground mb-3">
+                Seamless payment processing with secure checkout and invoicing
+              </p>
+              <p className="text-sm font-medium text-primary">
+                ✓ Get paid instantly, reduce payment delays
+              </p>
+            </div>
+            
+            <div className="glass-card p-6 hover:scale-105 transition-all">
+              <div className="w-12 h-12 mb-4 bg-gradient-to-br from-primary-start to-primary-end rounded-xl flex items-center justify-center">
+                <TrendingUp className="h-6 w-6 text-white" />
+              </div>
+              <h4 className="text-xl font-semibold mb-2">CRM Integration</h4>
+              <p className="text-muted-foreground mb-3">
+                Manage customer relationships and build loyalty with integrated tools
+              </p>
+              <p className="text-sm font-medium text-primary">
+                ✓ Improve customer retention by 40%
+              </p>
+            </div>
+            
+            <div className="glass-card p-6 hover:scale-105 transition-all">
+              <div className="w-12 h-12 mb-4 bg-gradient-to-br from-primary-start to-primary-end rounded-xl flex items-center justify-center">
+                <CheckCircle2 className="h-6 w-6 text-white" />
+              </div>
+              <h4 className="text-xl font-semibold mb-2">Zero Overbooking</h4>
+              <p className="text-muted-foreground mb-3">
+                Smart algorithms prevent double bookings and optimize capacity
+              </p>
+              <p className="text-sm font-medium text-primary">
+                ✓ 100% booking accuracy guaranteed
+              </p>
+            </div>
           </div>
         </div>
       </section>
