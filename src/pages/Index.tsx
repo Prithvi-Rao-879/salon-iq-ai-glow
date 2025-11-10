@@ -3,14 +3,54 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SalonCard from "@/components/SalonCard";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Search, Calendar, CheckCircle2, Clock, Bell, BarChart3, CreditCard, Users, TrendingUp } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Sparkles, Search, Calendar, CheckCircle2, Clock, Bell, BarChart3, CreditCard, Users, TrendingUp, Filter, MapPin } from "lucide-react";
 import { salons } from "@/data/salons";
 import heroImage from "@/assets/hero-salon.jpg";
 import { useAuth } from "@/hooks/useAuth";
+import { useState, useMemo } from "react";
 
 const Index = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState("rating");
+  const [filterCategory, setFilterCategory] = useState("all");
+
+  const filteredAndSortedSalons = useMemo(() => {
+    let filtered = salons;
+
+    // Search filter
+    if (searchQuery) {
+      filtered = filtered.filter(salon =>
+        salon.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        salon.location.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    // Category filter
+    if (filterCategory !== "all") {
+      filtered = filtered.filter(salon => {
+        const category = salon.services?.[0] || "";
+        return category.toLowerCase().includes(filterCategory.toLowerCase());
+      });
+    }
+
+    // Sort
+    const sorted = [...filtered].sort((a, b) => {
+      if (sortBy === "rating") {
+        return b.rating - a.rating;
+      } else if (sortBy === "price-low") {
+        return a.price.localeCompare(b.price);
+      } else if (sortBy === "price-high") {
+        return b.price.localeCompare(a.price);
+      }
+      return 0;
+    });
+
+    return sorted;
+  }, [searchQuery, sortBy, filterCategory]);
 
   const handleBookNow = () => {
     if (!user) {
@@ -77,11 +117,76 @@ const Index = () => {
             Discover premium salons and book your appointment instantly
           </p>
         </div>
+
+        {/* Filters and Search */}
+        <div className="glass-card p-6 mb-8 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search salons or location..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            
+            <Select value={sortBy} onValueChange={setSortBy}>
+              <SelectTrigger>
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="rating">Highest Rating</SelectItem>
+                <SelectItem value="price-low">Price: Low to High</SelectItem>
+                <SelectItem value="price-high">Price: High to Low</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Select value={filterCategory} onValueChange={setFilterCategory}>
+              <SelectTrigger>
+                <SelectValue placeholder="Category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Categories</SelectItem>
+                <SelectItem value="hair">Hair Salon</SelectItem>
+                <SelectItem value="spa">Spa</SelectItem>
+                <SelectItem value="nail">Nail Salon</SelectItem>
+                <SelectItem value="makeup">Makeup</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {salons.map((salon) => (
-            <SalonCard key={salon.id} {...salon} />
-          ))}
+          {filteredAndSortedSalons.length > 0 ? (
+            filteredAndSortedSalons.map((salon) => (
+              <SalonCard key={salon.id} {...salon} />
+            ))
+          ) : (
+            <div className="col-span-full text-center py-12">
+              <p className="text-muted-foreground text-lg">No salons found matching your criteria</p>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Map Integration Section */}
+      <section className="container mx-auto px-4 py-16">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold mb-4">Find Salons Near You</h2>
+          <p className="text-muted-foreground text-lg">
+            Explore salons on the map and book instantly
+          </p>
+        </div>
+        
+        <div className="glass-card p-8 max-w-6xl mx-auto">
+          <div className="aspect-video bg-muted rounded-2xl flex items-center justify-center">
+            <div className="text-center space-y-4">
+              <MapPin className="h-16 w-16 mx-auto text-primary" />
+              <p className="text-xl font-semibold">Interactive Map Coming Soon</p>
+              <p className="text-muted-foreground">Mapbox integration for live salon locations</p>
+            </div>
+          </div>
         </div>
       </section>
       

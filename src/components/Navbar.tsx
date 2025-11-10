@@ -1,21 +1,22 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Sparkles, LogOut } from "lucide-react";
+import { Sparkles, LogOut, Moon, Sun } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useTheme } from "next-themes";
 
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { theme, setTheme } = useTheme();
   
   const isActive = (path: string) => location.pathname === path;
   
   const handleLogout = async () => {
     try {
       const { error } = await supabase.auth.signOut();
-      // Ignore session_not_found errors as user is already logged out
       if (error && error.message !== 'Session not found') {
         console.error('Logout error:', error);
         toast.error("Failed to logout");
@@ -25,7 +26,6 @@ const Navbar = () => {
       navigate("/");
     } catch (err) {
       console.error('Unexpected logout error:', err);
-      // Still navigate away even if there's an error
       navigate("/");
     }
   };
@@ -55,16 +55,33 @@ const Navbar = () => {
               isActive('/my-bookings') ? 'text-primary' : 'text-foreground/80'
             }`}
           >
-            My Bookings
+            Dashboard
+          </Link>
+          <Link 
+            to="/admin" 
+            className={`text-sm font-medium transition-colors hover:text-primary ${
+              isActive('/admin') ? 'text-primary' : 'text-foreground/80'
+            }`}
+          >
+            Admin
           </Link>
         </div>
         
         <div className="flex items-center gap-3">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            className="rounded-full"
+          >
+            <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+            <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          </Button>
           {user ? (
             <>
               <Link to="/my-bookings">
                 <Button variant="ghost" size="sm">
-                  My Bookings
+                  Dashboard
                 </Button>
               </Link>
               <Button variant="gradient" size="sm" onClick={handleLogout}>

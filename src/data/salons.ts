@@ -24,6 +24,8 @@ export interface Salon {
   id: number;
   name: string;
   image: string;
+  location: string;
+  price: string;
   services: string[];
   rating: number;
   description: string;
@@ -36,6 +38,8 @@ export const salons: Salon[] = [
     id: 1,
     name: "Luxe Hair Studio",
     image: salon1,
+    location: "Downtown, New York",
+    price: "₹₹₹",
     services: ["Haircut", "Styling", "Coloring"],
     rating: 4.8,
     description: "Modern hair salon with expert stylists specializing in cutting-edge trends and classic styles.",
@@ -56,6 +60,8 @@ export const salons: Salon[] = [
     id: 2,
     name: "Elegance Beauty Spa",
     image: salon2,
+    location: "Midtown Plaza, Mumbai",
+    price: "₹₹₹₹",
     services: ["Facial", "Spa", "Massage"],
     rating: 4.9,
     description: "Luxury spa offering premium skincare treatments and relaxation therapies.",
@@ -76,6 +82,8 @@ export const salons: Salon[] = [
     id: 3,
     name: "Polished Nails Bar",
     image: salon3,
+    location: "Fashion District, London",
+    price: "₹₹",
     services: ["Manicure", "Pedicure", "Nail Art"],
     rating: 4.7,
     description: "Premium nail salon with the latest trends in nail care and artistic designs.",
@@ -96,6 +104,8 @@ export const salons: Salon[] = [
     id: 4,
     name: "Radiance Makeup Studio",
     image: salon4,
+    location: "Arts Quarter, Paris",
+    price: "₹₹₹",
     services: ["Makeup", "Skincare", "Brows"],
     rating: 4.9,
     description: "Professional makeup studio for special events, weddings, and everyday glamour.",
@@ -116,6 +126,8 @@ export const salons: Salon[] = [
     id: 5,
     name: "Urban Edge Barbershop",
     image: salon5,
+    location: "Hillside, Los Angeles",
+    price: "₹₹",
     services: ["Haircut", "Shave", "Beard Trim"],
     rating: 4.8,
     description: "Contemporary barbershop combining classic techniques with modern style.",
@@ -136,6 +148,8 @@ export const salons: Salon[] = [
     id: 6,
     name: "Vintage Glam Salon",
     image: salon6,
+    location: "Business District, Singapore",
+    price: "₹₹₹",
     services: ["Styling", "Treatments", "Extensions"],
     rating: 4.7,
     description: "Boutique salon blending vintage charm with modern hair care expertise.",
