@@ -55,7 +55,7 @@ const SignUp = () => {
         options: {
           emailRedirectTo: redirectUrl,
           data: {
-            name,
+            full_name: name,
           },
         },
       });

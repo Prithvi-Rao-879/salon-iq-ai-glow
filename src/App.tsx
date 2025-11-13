@@ -10,6 +10,7 @@ import SalonDetail from "./pages/SalonDetail";
 import BookingConfirmed from "./pages/BookingConfirmed";
 import MyBookings from "./pages/MyBookings";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminSetup from "./pages/AdminSetup";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import NotFound from "./pages/NotFound";
@@ -30,6 +31,7 @@ const App = () => (
               <Route path="/booking-confirmed" element={<BookingConfirmed />} />
               <Route path="/my-bookings" element={<MyBookings />} />
               <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/admin-setup" element={<AdminSetup />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

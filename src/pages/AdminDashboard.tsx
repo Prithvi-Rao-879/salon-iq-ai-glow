@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -182,10 +182,19 @@ const AdminDashboard = () => {
   if (!isAdmin) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Card className="glass-card p-8 max-w-md">
-          <h2 className="text-2xl font-bold mb-4">Access Denied</h2>
-          <p className="text-muted-foreground mb-4">You don't have permission to access the admin dashboard.</p>
-          <Button onClick={() => window.location.href = "/"}>Go to Home</Button>
+        <Card className="glass-card p-8 max-w-md text-center">
+          <h2 className="text-2xl font-bold mb-4">Admin Access Required</h2>
+          <p className="text-muted-foreground mb-6">You need to set up your salon and become an admin to access this dashboard.</p>
+          <div className="space-y-3">
+            <Link to="/admin-setup">
+              <Button variant="gradient" className="w-full">
+                Set Up Salon & Become Admin
+              </Button>
+            </Link>
+            <Button variant="outline" onClick={() => window.location.href = "/"}>
+              Go to Home
+            </Button>
+          </div>
         </Card>
       </div>
     );

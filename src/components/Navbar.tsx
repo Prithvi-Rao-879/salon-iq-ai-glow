@@ -84,6 +84,11 @@ const Navbar = () => {
                   Dashboard
                 </Button>
               </Link>
+              <Link to="/admin-setup">
+                <Button variant="outline" size="sm">
+                  Become Admin
+                </Button>
+              </Link>
               <Button variant="gradient" size="sm" onClick={handleLogout}>
                 <LogOut className="h-4 w-4 mr-2" />
                 Logout
