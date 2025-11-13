@@ -17,6 +17,20 @@ interface DashboardStats {
   todayBookings: number;
 }
 
+interface Profile {
+  id: string;
+  full_name: string | null;
+  salon_id: string | null;
+}
+
+interface Salon {
+  id: string;
+  name: string;
+  location: string | null;
+  rating: number | null;
+  price_range: string | null;
+}
+
 const AdminDashboard = () => {
   const { user, loading } = useAuth();
   const [stats, setStats] = useState<DashboardStats>({
@@ -28,17 +42,65 @@ const AdminDashboard = () => {
   });
   const [recentBookings, setRecentBookings] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [salon, setSalon] = useState<Salon | null>(null);
 
   useEffect(() => {
-    const fetchDashboardData = async () => {
+    const checkAdminAndFetchData = async () => {
       if (!user) return;
 
       setIsLoading(true);
       
-      // Fetch all bookings
+      // Check if user is admin
+      const { data: roleData, error: roleError } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .eq('role', 'admin')
+        .maybeSingle();
+
+      if (roleError) {
+        console.error("Failed to check admin role:", roleError);
+        toast.error("Failed to verify admin access");
+        setIsLoading(false);
+        return;
+      }
+
+      if (!roleData) {
+        toast.error("You don't have admin access");
+        setIsLoading(false);
+        return;
+      }
+
+      setIsAdmin(true);
+
+      // Fetch user profile to get salon_id
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('*, salons(*)')
+        .eq('id', user.id)
+        .single();
+
+      if (profileError) {
+        console.error("Failed to fetch profile:", profileError);
+        toast.error("Failed to load profile data");
+        setIsLoading(false);
+        return;
+      }
+
+      if (!profile?.salon_id) {
+        toast.error("No salon assigned to your account. Please contact support.");
+        setIsLoading(false);
+        return;
+      }
+
+      setSalon(profile.salons);
+
+      // Fetch bookings for this salon only
       const { data: bookings, error } = await supabase
         .from('bookings')
         .select('*')
+        .eq('salon_id', profile.salon_id)
         .order('created_at', { ascending: false });
 
       if (error) {
@@ -70,7 +132,7 @@ const AdminDashboard = () => {
       setIsLoading(false);
     };
 
-    fetchDashboardData();
+    checkAdminAndFetchData();
   }, [user]);
 
   const handleStatusChange = async (bookingId: string, newStatus: string) => {
@@ -84,20 +146,49 @@ const AdminDashboard = () => {
     } else {
       toast.success(`Booking status updated to ${newStatus}`);
       // Refresh bookings
-      const { data } = await supabase
-        .from('bookings')
-        .select('*')
-        .order('created_at', { ascending: false });
-      if (data) setRecentBookings(data.slice(0, 10));
+      // Refresh bookings for this salon
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('salon_id')
+        .eq('id', user?.id)
+        .single();
+      
+      if (profile?.salon_id) {
+        const { data } = await supabase
+          .from('bookings')
+          .select('*')
+          .eq('salon_id', profile.salon_id)
+          .order('created_at', { ascending: false });
+        if (data) setRecentBookings(data.slice(0, 10));
+      }
     }
   };
 
   if (loading || isLoading) {
-    return null;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading dashboard...</p>
+        </div>
+      </div>
+    );
   }
 
   if (!user) {
     return <Navigate to="/login" replace />;
+  }
+
+  if (!isAdmin) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Card className="glass-card p-8 max-w-md">
+          <h2 className="text-2xl font-bold mb-4">Access Denied</h2>
+          <p className="text-muted-foreground mb-4">You don't have permission to access the admin dashboard.</p>
+          <Button onClick={() => window.location.href = "/"}>Go to Home</Button>
+        </Card>
+      </div>
+    );
   }
 
   return (
@@ -106,8 +197,13 @@ const AdminDashboard = () => {
       
       <div className="container mx-auto px-4 py-16">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Salon Admin Dashboard</h1>
+          <h1 className="text-4xl font-bold mb-2">
+            {salon?.name ? `${salon.name} - Admin Dashboard` : 'Salon Admin Dashboard'}
+          </h1>
           <p className="text-muted-foreground">Manage your salon bookings and track performance</p>
+          {salon?.location && (
+            <p className="text-sm text-muted-foreground mt-1">📍 {salon.location}</p>
+          )}
         </div>
 
         {/* Stats Grid */}
